@@ -8,3 +8,10 @@ addons:
     - mongodb-3.2-precise
     packages:
     - mongodb-org-server
+deploy:
+  provider: heroku
+  api_key:
+    secure: hQ4YkZzPekEhurK4KfLyMRrCNKrt0aLXB/zJNT1q19Uq7nmCJvLVjDsHCOAwkf/MN/XwiBOxrywX8aRhtQLauYukd34YAPyavF7DMDUewIBsHeWNHQf6C2UN+jxxE7YMTC3/gkCFypH7qtP6Q/un1fr1HKKKGvUeGoaLXDdR6b28vOukgE3BoMPas08CiUJIFohG93QHxxTq9Io4yV2tPpZcQlcWwHCoruws7zCDJPQGywAwO8vSIqMb5lyXb29pnZa4AgKtKrnWvYbZYn6F+yqLhOU55MdgwyvhaQKX7W0fqerYAZF6KfpMY4kMJl5hILM/Rd+lxM2ipkn4wKNaF15qGE5u0Z4gQ3aWc+2mCrjVZxdhmZ9dsFC/ESB92L805JGRYI181PFQShIH9x5sWgDvHeyvp3+Jke5Urjn6NUqTpCtZ97Z4684jVwDrwmu51cvEDqO71ewpCGYepXpJWdz3TbExcWzUii3e8bBBB4PCTAspyZfoTApG/A4HEUzjcl/sAn3C2ganSJItlVhUceuGLe7Ti2LWwNBcXAdfUSE5ctMFFX2+nqOqjDADPsBKtR2yHdv0zPoAO3NJfTZOGwiCHz5D/nBgsm1Evoo4VRhjO556MZUD6DycobmIZtnUCYNL8Ck4pZ7+7NmkC8k+IgFQQ/arGQLglR1ttNFrsIA=
+  app: ancient-earth-99220
+  on:
+    repo: amcavinue/mongo-shopping-list
