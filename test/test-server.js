@@ -9,7 +9,6 @@ var should = chai.should();
 var expect = chai.expect;
 
 var app = server.app;
-var storage = server.storage;
 
 chai.use(chaiHttp);
 
@@ -24,30 +23,20 @@ describe('Shopping List', function() {
         });
     });
 
-    after(function(done) {
-        Item.remove(function() {
-            done();
-        });
-    });
-});
-
-describe('Shopping List', function() {
     /**
      * GET
      */
     it('should list items on get', function(done) {
-        debugger;
         chai.request(app)
             .get('/items')
             .end(function(err, res) {
                 res.should.have.status(200);
                 res.should.be.json;
                 res.body.should.be.a('array');
-                res.body.should.have.length(6);
+                res.body.should.have.length(3);
                 res.body[0].should.be.a('object');
-                res.body[0].should.have.property('id');
+                res.body[0].should.have.property('_id');
                 res.body[0].should.have.property('name');
-                res.body[0].id.should.be.a('number');
                 res.body[0].name.should.be.a('string');
                 res.body[0].name.should.equal('Broad beans');
                 res.body[1].name.should.equal('Tomatoes');
@@ -79,18 +68,9 @@ describe('Shopping List', function() {
                 res.should.be.json;
                 res.body.should.be.a('object');
                 res.body.should.have.property('name');
-                res.body.should.have.property('id');
+                res.body.should.have.property('_id');
                 res.body.name.should.be.a('string');
-                res.body.id.should.be.a('number');
                 res.body.name.should.equal('Kale');
-                storage.items.should.be.a('array');
-                storage.items.should.have.length(7);
-                storage.items[6].should.be.a('object');
-                storage.items[6].should.have.property('id');
-                storage.items[6].should.have.property('name');
-                storage.items[6].id.should.be.a('number');
-                storage.items[6].name.should.be.a('string');
-                storage.items[6].name.should.equal('Kale');
                 done();
             });
     });
@@ -120,8 +100,8 @@ describe('Shopping List', function() {
      */
     it('should edit an item on put', function(done) {
         chai.request(app)
-            .put('/items/1')
-            .send({name: 'potatoes', id: 1})
+            .put('/items/Tomatoes')
+            .send({name: 'potatoes'})
             .end(function(err, res) {
                res.should.have.status(201); 
             });
@@ -134,15 +114,14 @@ describe('Shopping List', function() {
                 res.should.be.json;
                 res.body.should.be.a('array');
                 res.body[0].should.be.a('object');
-                res.body[0].should.have.property('id');
+                res.body[0].should.have.property('_id');
                 res.body[0].should.have.property('name');
-                res.body[0].id.should.be.a('number');
                 res.body[0].name.should.be.a('string');
                 done();
             });
     });
     
-    it('should error on put without id', function(done) {
+    it('should error on put without name', function(done) {
         chai.request(app)
             .put('/items/')
             .end(function(err, res) {
@@ -151,20 +130,10 @@ describe('Shopping List', function() {
             });
     });
     
-    it('should error on put with different id in endpoint and body', function(done) {
-        chai.request(app)
-            .put('/items/2')
-            .send({name: 'abc', id: 1})
-            .end(function(err, res) {
-                expect(err).to.not.be.null;
-                done();
-            });
-    });
-    
-    it('should error on put with non-existant id', function(done) {
+    it('should error on put with non-existant name', function(done) {
         chai.request(app)
             .put('/items/9999')
-            .send({name: 'abc', id: 9999})
+            .send({name: 'abc'})
             .end(function(err, res) {
                 expect(err).to.not.be.null;
                 done();
@@ -174,7 +143,7 @@ describe('Shopping List', function() {
     it('should error on put without body data', function(done) {
         chai.request(app)
             .put('/items/1')
-            .send({name: undefined, id: 1})
+            .send({name: undefined})
             .end(function(err, res) {
                expect(err).to.not.be.null;
                done();
@@ -195,7 +164,7 @@ describe('Shopping List', function() {
      */
     it('should delete an item on delete', function(done) {
         chai.request(app)
-            .delete('/items/1')
+            .delete('/items/potatoes')
             .end(function(err, res) {
                res.should.have.status(200);
                done();
@@ -211,12 +180,18 @@ describe('Shopping List', function() {
             });
     });
     
-    it('should error on delete without id', function(done) {
+    it('should error on delete without name', function(done) {
         chai.request(app)
             .delete('/items/')
             .end(function(err, res) {
                 expect(err).to.not.be.null;
                 done();
             });
+    });
+
+    after(function(done) {
+        Item.remove(function() {
+            done();
+        });
     });
 });
